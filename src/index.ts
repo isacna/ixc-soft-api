@@ -32,11 +32,11 @@ import { listAll } from "./service/list";
  * ```
  */
 class IXC {
-  readonly #url: string;
-  readonly #authenticate: Return_Auth;
+  public url: string;
+  public authenticate: Return_Auth;
   constructor({ url, credentials }: { url: string; credentials: IXC_Auth }) {
-    this.#url = url;
-    this.#authenticate = auth(credentials)
+    this.url = url;
+    this.authenticate = auth(credentials)
   }
 
   /**
@@ -62,7 +62,7 @@ class IXC {
      * @returns {@link IxcListResponse}
      */
   async list(table: string, body: BodyRaw): Promise<IxcListResponse> {
-    return await listAll(this.#url, this.#authenticate.token, table, body)
+    return await listAll(this.url, this.authenticate.token, table, body)
   };
 
   /**
@@ -97,7 +97,7 @@ class IXC {
      * @returns {@link IxcListResponse}
      */
   async listFilter(table: string, filter: FilterParams[]): Promise<IxcListResponse> {
-    return await concatenatedFilter(this.#url, this.#authenticate.token, table, filter)
+    return await concatenatedFilter(this.url, this.authenticate.token, table, filter)
   }
 
 }
