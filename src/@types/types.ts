@@ -1,14 +1,17 @@
 interface Config {
-    url: String,
-    auth: String
+    url: string,
+    auth: string
 }
 
 interface Result {
-    registros: String[],
-    total: Number,
+    registros: string[],
+    total: number,
 }
+
 type FilterOperator = '=' | '>=' | '>' | '<=' | '<' | 'L' | '!='
 type SortOrder = 'asc' | 'desc'
+
+export type IxcRequestOperation = 'listar' | 'obter' | 'incluir' | 'alterar' | 'deletar';
 
 export interface BodyRaw {
     qtype: string,
@@ -46,6 +49,19 @@ export interface IxcListResponse {
     message?: string
     registros?: unknown[]
     total?: number
+}
+
+export interface IxcReadResponse {
+    status?: string;
+    message?: string;
+    registro?: unknown;
+}
+
+export interface IxcMutationResponse {
+    status?: string;
+    type?: string;
+    message?: string;
+    data?: Record<string, unknown>;
 }
 
 export interface Return_Auth {

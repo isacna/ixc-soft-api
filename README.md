@@ -1,38 +1,92 @@
 # API IXC Soft
 
-Este módulo permite que você faz consultas no seu ERP de forma automática, passando apenas alguns parametros de forma simples.
+SDK em TypeScript para consumir o WebService do IXC Soft e facilitar publicação/consumo via NPM.
 
-## Uso
-
-Instalar pacote usando NPM
+## Instalação
 
 ```bash
 npm install api-ixc-soft
 ```
 
-Instancie a class e exporte.
+## Configuração
 
-```javascript
-import IXC from "api-ixc-soft"
+```ts
+import IXC from "api-ixc-soft";
 
 export const ixc = new IXC({
-    url: `https://HOST.com.br`,
-    credentials: {token: `Basic ******`} or {username: "123", password: "41837b8eb82f1e60e148823a..."}
-    })
+  url: "https://HOST.com.br",
+  credentials: { token: "Basic ******" },
+  // ou
+  // credentials: { username: "123", password: "41837b8eb82f1e60e148823a..." }
+});
 ```
 
-Exemplo request:
+## Métodos disponíveis
 
-```javascript
+### `list(table, body)`
 
-const row = async () => {
-    const result = await ixc.list("cliente", {
-        qtype: "id",
-        query: "123",
-        oper: "=",
-        page: "1",
-    });
-    return result;
-};
-row().then((item) => console.log(item));
+Consulta registros com `ixcsoft: listar`.
+
+```ts
+const result = await ixc.list("cliente", {
+  qtype: "id",
+  query: "123",
+  oper: "=",
+  page: "1",
+  rp: "20",
+});
 ```
+
+### `listFilter(table, filter)`
+
+Consulta com filtros concatenados (`grid_param`).
+
+```ts
+const result = await ixc.listFilter("su_oss_chamado", [
+  { TB: "status", OP: "=", P: "F", C: "AND", G: "status" },
+  { TB: "setor", OP: "=", P: "1", C: "AND", G: "setor" },
+]);
+```
+
+### `read(table, body)`
+
+Obtém um único registro com `ixcsoft: obter`.
+
+```ts
+const result = await ixc.read("cliente", { id: "123" });
+```
+
+### `create(table, body)`
+
+Insere registro com `ixcsoft: incluir`.
+
+```ts
+const result = await ixc.create("cliente", {
+  razao: "Cliente Teste",
+  tipo_pessoa: "F",
+});
+```
+
+### `update(table, body)`
+
+Atualiza registro com `ixcsoft: alterar`.
+
+```ts
+const result = await ixc.update("cliente", {
+  id: "123",
+  razao: "Cliente Atualizado",
+});
+```
+
+### `delete(table, body)`
+
+Remove registro com `ixcsoft: deletar`.
+
+```ts
+const result = await ixc.delete("cliente", { id: "123" });
+```
+
+## Observação
+
+Os endpoints/tabelas e payloads dependem da documentação oficial do IXC Soft:
+https://wikiapiprovedor.ixcsoft.com.br/#
