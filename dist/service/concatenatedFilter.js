@@ -1,35 +1,29 @@
-import fetch from "node-fetch";
+import { ixcRequest } from "./request.js";
 export async function concatenatedFilter(url, token, table, filter) {
     const body = {
         rp: "100000",
         grid_param: JSON.stringify(filter),
     };
-    const ixcRequest = await fetch(`${url}/webservice/v1/${table}`, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-            ixcsoft: "listar",
-            "Content-Type": "application/json",
-            Authorization: token,
-        },
+    const response = await ixcRequest({
+        url,
+        token,
+        table,
+        operation: "listar",
+        body,
     });
-    if (ixcRequest.ok === false) {
-        throw Error(`Network response was not ok`);
-    }
-    const response = await ixcRequest.json();
-    if (response.registros && response.registros.length > 0) {
+    if (Array.isArray(response.registros) && response.registros.length > 0) {
         return {
             status: "success",
-            total: response.total,
-            registros: response.registros
+            total: Number(response.total || 0),
+            registros: response.registros,
         };
     }
-    if (response.total == 0) {
+    if (Number(response.total || 0) === 0) {
         return {
             status: "error",
             total: 0,
-            registros: []
+            registros: [],
         };
     }
-    throw Error(`Unrecognized response from IXC: ${JSON.stringify(response)}`);
+    throw new Error(`Unrecognized response from IXC: ${JSON.stringify(response)}`);
 }
