@@ -79,6 +79,23 @@ const { registros } = await ixc.os.list({ idCliente: 24353 });
 const chamado = await ixc.os.get({ id: 1049577 });
 ```
 
+### `login` — logins de acesso radius/PPPoE (`radusuarios`)
+
+```ts
+// Por cliente/contrato, online e/ou ativo
+const { registros } = await ixc.login.list({ idCliente: 24353, online: "S" });
+
+const login = await ixc.login.get({ id: 81307 });
+```
+
+### `filial` — filiais (`filial`)
+
+```ts
+const { registros } = await ixc.filial.list({ ativo: "S" });
+
+const filial = await ixc.filial.get({ id: 9 });
+```
+
 **Formato das respostas**
 
 - `list` → `{ status?: string; total?: number; registros: T[] }`

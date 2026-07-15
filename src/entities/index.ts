@@ -2,6 +2,8 @@ import { boletoEntity } from "./boleto";
 import { clienteEntity } from "./cliente";
 import { contratoEntity } from "./contrato";
 import { osEntity } from "./os";
+import { loginEntity } from "./login";
+import { filialEntity } from "./filial";
 import type { EntityClient } from "../core/entity";
 
 /**
@@ -13,6 +15,8 @@ export const registry = {
   cliente: clienteEntity,
   contrato: contratoEntity,
   os: osEntity,
+  login: loginEntity,
+  filial: filialEntity,
 } as const;
 
 export type Registry = typeof registry;
