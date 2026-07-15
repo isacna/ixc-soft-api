@@ -1,4 +1,4 @@
-import { IxcMutationResponse, IxcReadResponse, IxcRequestOperation } from "../@types/types.js";
+import { IxcRequestOperation } from "../@types/types.js";
 interface RequestOptions {
     url: string;
     token: string;
@@ -6,7 +6,10 @@ interface RequestOptions {
     operation: IxcRequestOperation;
     body?: unknown;
 }
+/**
+ * Back-compat shim: the legacy service wrappers still call this. Behavior is
+ * unchanged — POST `/webservice/v1/{table}` with the `ixcsoft` header — it just
+ * routes through the shared {@link ixcCall} transport now.
+ */
 export declare function ixcRequest<T = unknown>({ url, token, table, operation, body, }: RequestOptions): Promise<T>;
-export declare function parseMutationResponse(response: unknown): IxcMutationResponse;
-export declare function parseReadResponse(response: unknown): IxcReadResponse;
-export {};
+export { parseMutationResponse, parseReadResponse } from "../core/normalize.js";

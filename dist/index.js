@@ -5,11 +5,19 @@ import { deleteRecord } from "./service/delete.js";
 import { listAll } from "./service/list.js";
 import { readRecord } from "./service/read.js";
 import { updateRecord } from "./service/update.js";
+import { createEntityClient } from "./core/client.js";
+import { registry } from "./entities/index.js";
 class IXC {
     constructor({ url, credentials }) {
         this.url = url;
         this.authenticate = auth(credentials);
+        this.ctx = { url, token: this.authenticate.token };
+        const table = registry;
+        for (const key of Object.keys(table)) {
+            this[key] = createEntityClient(table[key], this.ctx);
+        }
     }
+    // ---- Generic API (unchanged, back-compatible) ----------------------------
     async list(table, body) {
         return await listAll(this.url, this.authenticate.token, table, body);
     }
@@ -30,3 +38,7 @@ class IXC {
     }
 }
 export default IXC;
+// Public surface for building on top of the SDK (and a future MCP server).
+export { defineEntity } from "./core/entity.js";
+export { buildGridParam } from "./core/filters.js";
+export { registry } from "./entities/index.js";
